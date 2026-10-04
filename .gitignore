@@ -1,0 +1,23 @@
+# Secrets and local credentials must never be committed.
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+*credentials*.json
+*token*.json
+secrets/
+
+# Local tooling, reports, backups, and browser profiles.
+.venv/
+node_modules/
+__pycache__/
+*.pyc
+reports/
+_site/
+backups/
+*.bak
+*.log
+.DS_Store
+Thumbs.db
