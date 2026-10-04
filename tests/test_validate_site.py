@@ -44,7 +44,7 @@ class PublicationBoundaryTests(unittest.TestCase):
         self.html += ''.join(f'<a href="{href}">contact</a>' for href in links)
         self.html += '<section id="about">about</section>'
         self.html += ''.join(
-            f'<article class="doctor-card"><figure><img src="assets/images/{photos[name]}" width="528" height="660" alt="{name}醫師"></figure>'
+            f'<article class="doctor-card"><figure><img src="assets/images/{photos[name]}" width="900" height="675" alt="{name}醫師"></figure>'
             f'<h3>{name} <span>醫師</span></h3>{role}</article>'
             for name, role in (('陳炳諴', '內科'), ('張峻愷', '內科'), ('高傳紘', '內科／胸腔內科'))
         )
@@ -392,7 +392,7 @@ class PublicationBoundaryTests(unittest.TestCase):
                     self.validate()
 
     def test_photo_dimensions_must_match(self):
-        self.write_html(self.html.replace('width="528" height="660" alt="高傳紘醫師"', 'width="300" height="300" alt="高傳紘醫師"'))
+        self.write_html(self.html.replace('width="900" height="675" alt="高傳紘醫師"', 'width="300" height="300" alt="高傳紘醫師"'))
         with self.assertRaisesRegex(ValueError, 'same width/height'):
             self.validate()
 
