@@ -16,6 +16,8 @@ DOCTOR_PHOTOS = (('陳炳諴', 'assets/images/doctor-chen.webp'), ('張峻愷', 
 QR_IMAGE = 'assets/images/line-qr.png'
 MAX_PHOTO_BYTES = 150_000
 BANNED_TEXT = ('第一名', '良醫健康網', '名醫', '最佳診所', '最好的', '保證', '根治', '@174kjvzv', '@cm166', 'lin.ee/Wjt5Hny', '限複診', '目前無線上預約功能')
+CHEN_SOURCE = 'https://www.cm166.com.tw/archives/team/doctor01'
+CHEN_REVIEW_CREDENTIAL = '<li>商業周刊《良醫健康網》獲得「胃腸肝膽科」第一名好醫師的評價</li>'
 
 
 def require(condition, message):
@@ -117,8 +119,19 @@ def validate():
         dims = (re.search(r'width="(\d+)"', tag).group(1), re.search(r'height="(\d+)"', tag).group(1))
         sizes.add(dims)
     require(len(sizes) == 1, 'All doctor photos must share the same width/height')
+    # The requested source-backed historical review belongs only to Dr. Chen's
+    # credentials. Keep the general ban on rankings and promotional claims.
+    claims = live
+    chen_card = next((card for card in re.findall(r'<article class="doctor-card">.*?</article>', live, re.S)
+                      if '<h3>陳炳諴 ' in card), '')
+    if CHEN_REVIEW_CREDENTIAL in chen_card:
+        credential_parser = Site()
+        credential_parser.feed(chen_card)
+        require(any(a['href'] == CHEN_SOURCE for a in credential_parser.anchors),
+                'Dr. Chen review credential requires its source link')
+        claims = claims.replace(chen_card, chen_card.replace(CHEN_REVIEW_CREDENTIAL, '', 1), 1)
     for word in BANNED_TEXT:
-        require(word not in live, f'Banned text found: {word}')
+        require(word not in claims, f'Banned text found: {word}')
     require(live.count(GENERAL_MEDICINE) == 2, 'General medicine list must appear exactly twice (hero card and care box)')
     about = re.search(r'<section[^>]+id="about".*?</section>', live, re.S).group()
     require(CLINIC_SITE not in about, 'The 永康 site link must not appear in the about section')

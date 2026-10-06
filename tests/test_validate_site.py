@@ -338,6 +338,38 @@ class PublicationBoundaryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Banned text found'):
             self.validate()
 
+    def test_source_backed_chen_review_credential_is_allowed(self):
+        credential = (validate_site.CHEN_REVIEW_CREDENTIAL
+                      + f'<a href="{validate_site.CHEN_SOURCE}">來源</a>')
+        self.write_html(self.html.replace('內科</article>', f'內科{credential}</article>', 1))
+        self.validate()
+
+    def test_chen_review_credential_requires_source_in_same_card(self):
+        html = self.html.replace('內科</article>',
+                                 f'內科{validate_site.CHEN_REVIEW_CREDENTIAL}</article>', 1)
+        self.write_html(html + f'<a href="{validate_site.CHEN_SOURCE}">來源</a>')
+        with self.assertRaisesRegex(ValueError, 'requires its source link'):
+            self.validate()
+
+    def test_review_credential_cannot_be_reused_as_other_claims(self):
+        credential = (validate_site.CHEN_REVIEW_CREDENTIAL
+                      + f'<a href="{validate_site.CHEN_SOURCE}">來源</a>')
+        html = self.html.replace('內科</article>', f'內科{credential}</article>', 1)
+        for other_claim in (validate_site.CHEN_REVIEW_CREDENTIAL,
+                            '<p>良醫健康網第一名</p>', '<p>最佳診所</p>'):
+            with self.subTest(claim=other_claim):
+                self.write_html(html + other_claim)
+                with self.assertRaisesRegex(ValueError, 'Banned text found'):
+                    self.validate()
+
+    def test_review_credential_in_another_doctor_card_is_rejected(self):
+        credential = (validate_site.CHEN_REVIEW_CREDENTIAL
+                      + f'<a href="{validate_site.CHEN_SOURCE}">來源</a>')
+        self.write_html(self.html.replace('內科／胸腔內科</article>',
+                                         f'內科／胸腔內科{credential}</article>'))
+        with self.assertRaisesRegex(ValueError, 'Banned text found'):
+            self.validate()
+
     def test_removed_booking_phrases_are_rejected(self):
         for phrase in ('限複診', '目前無線上預約功能'):
             with self.subTest(phrase=phrase):

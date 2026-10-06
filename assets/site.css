@@ -83,7 +83,7 @@ h2 { margin-bottom: 1rem; font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.35
 .section-title-row h2 { margin-bottom: 0; }
 .section-title-row > p { max-width: 24rem; margin: 0 0 .3rem; color: var(--muted); font-size: .95rem; }
 .doctors { background: var(--white); }
-.doctor-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1rem; }
+.doctor-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); align-items: start; gap: 1rem; }
 .doctor-card { padding: clamp(1.6rem, 3vw, 2.2rem); border: 1px solid var(--line); border-radius: .5rem; background: var(--paper); box-shadow: 0 8px 24px rgba(23,52,70,.06); }
 .doctor-card h3 { margin-bottom: .2rem; font-family: var(--serif); font-size: 1.6rem; line-height: 1.35; }
 .doctor-card h3 span { font-family: var(--sans); font-size: .85rem; font-weight: 600; color: var(--muted); }
@@ -97,6 +97,26 @@ h2 { margin-bottom: 1rem; font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.35
 .equipment-list { list-style: none; margin-block: 0; margin-inline: auto; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: .6rem 1.5rem; }
 .equipment-list li { position: relative; padding: .85rem 0 .85rem 1.4rem; border-top: 1px solid var(--line); color: var(--ink-soft); line-height: 1.7; }
 .equipment-list li::before { content: ""; position: absolute; left: .2rem; top: 1.45rem; width: .45rem; height: .45rem; border-radius: 50%; background: var(--mint-deep); }
+.doctor-history { margin-top: 1rem; }
+.doctor-history summary, .equipment-details summary { min-height: 44px; padding: .7rem 0; color: var(--mint-deep); font-size: .9rem; font-weight: 700; cursor: pointer; }
+.doctor-history summary:hover, .equipment-details summary:hover { color: var(--ink); }
+.doctor-history[open] summary, .equipment-details[open] summary { margin-bottom: .8rem; }
+.doctor-card .history-source { margin: 1rem 0 0; color: var(--muted); font-size: .78rem; }
+.history-source a { text-underline-offset: .2em; }
+.equipment-grid { margin-top: 2.5rem; display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); align-items: start; gap: 1.25rem; }
+.equipment-card { min-width: 0; padding: clamp(1.5rem, 3vw, 2.2rem); border: 1px solid var(--line); border-top: 4px solid var(--mint-deep); border-radius: .5rem; background: var(--white); box-shadow: 0 8px 24px rgba(23,52,70,.06); overflow-wrap: anywhere; }
+.equipment-card .eyebrow { letter-spacing: .06em; }
+.equipment-card h3 { margin-bottom: .7rem; font-family: var(--serif); font-size: clamp(1.35rem, 2.4vw, 1.75rem); line-height: 1.4; }
+.equipment-card p, .equipment-card li { color: var(--ink-soft); font-size: .95rem; line-height: 1.85; }
+.equipment-card .equipment-lead { margin-bottom: 1.3rem; color: var(--mint-deep); font-weight: 700; }
+.equipment-details { margin-top: 1.5rem; border-top: 1px solid var(--line); }
+.equipment-body h4 { margin: 1.5rem 0 .6rem; color: var(--ink); font-size: 1.05rem; line-height: 1.6; }
+.equipment-body h4:first-child { margin-top: .5rem; }
+.equipment-body ul { margin: 0 0 1rem; padding-left: 1.4rem; }
+.equipment-body li { margin-bottom: .4rem; padding-left: .15rem; }
+.equipment-body blockquote { margin: 1.5rem 0; padding: 1rem 1.15rem; border-left: 3px solid var(--mint-deep); background: var(--mint); color: var(--ink); font-weight: 600; font-size: .95rem; }
+.equipment-card .equipment-note { margin: 1.4rem 0 0; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .82rem; }
+@media (max-width: 720px) { .equipment-grid { grid-template-columns: 1fr; } }
 .badge { display: inline-block; margin-left: .4rem; padding: .1rem .55rem; border-radius: 999px; background: var(--sand); color: var(--clay-text); font-size: .76rem; font-weight: 700; }
 .note { max-width: 40rem; margin-top: 1.4rem; color: var(--muted); font-size: .9rem; }
 .visit { background: var(--sand); }
